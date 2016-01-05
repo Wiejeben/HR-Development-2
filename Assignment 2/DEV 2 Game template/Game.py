@@ -65,6 +65,6 @@ def Main():
         boats.map(lambda i: i.Draw(screen, offset))
 
         pygame.display.flip()
-        time.sleep(0.2)
+        time.sleep(1) #0.2
     
 Main()

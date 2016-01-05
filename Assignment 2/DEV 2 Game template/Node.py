@@ -49,8 +49,13 @@ class Node:
     def length(self):
         return 1 + self.Tail.length()
 
-    def random(self):
-        return self.index(randint(0, self.length()-1))
+    def random(self, return_index = False):
+        i = randint(0, self.length()-1)
+
+        if return_index:
+            return i
+
+        return self.index(i)
 
     def index(self, index):
         if index == 0:
