@@ -5,7 +5,6 @@ from Common import *
 class Boat:
     def __init__(self, position, canRemove, texture):
         self.Position = position
-        self.CanRemove = canRemove
         self.Texture = texture
 
     def Update(self):
@@ -27,13 +26,8 @@ class Boat:
         # Do we have somewhere to go to?
         if directions is not Empty:
             position.Taken = False
-            
-            if position.Harbor:
-                self.CanRemove = True
-                position.Taken = False
-            else:
-                position = directions.random().Value
-                position.Taken = True
+            position = directions.random().Value
+            position.Taken = True
 
             return Boat(position, self.CanRemove, self.Texture)
 
@@ -48,6 +42,16 @@ class Boat:
         screen.blit(pygame.transform.scale(self.Texture, (_width, _width)), 
                             (_width + POSITION_X * offset, 
                             _width + POSITION_Y * offset))
+    
+    def CanRemove(self):
+        position = self.Position
+
+        # Check if vehicle can be removed
+        if position.Harbor:
+            position.Taken = False
+            return True
+        
+        return False
 
     def IsTraverseable(tile):
         if tile and tile != None and not tile.Taken:

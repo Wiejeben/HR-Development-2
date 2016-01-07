@@ -25,8 +25,7 @@ def Main():
     start = time.time()
 
     # Initial vars
-    cars = Node(Car(entry_road.Value, False, car_texture), Empty)
-    boats = Node(Boat(entry_rivers.Value, False, boat_texture), Empty)
+    entities = Node(Boat(entry_rivers.Value, False, boat_texture), Node(Car(entry_road.Value, False, car_texture), Empty))
     step = 0
 
     while True:
@@ -45,26 +44,24 @@ def Main():
             _board.Value.Draw(screen, True)
             _board = _board.Tail
 
-        # Update and filter
-        cars = cars.map(lambda i: i.Update()).filter(lambda i: not i.CanRemove)
-        boats = boats.map(lambda i: i.Update()).filter(lambda i: not i.CanRemove)
+        # Update and filter entities
+        entities = entities.filter(lambda i: not i.CanRemove()).map(lambda i: i.Update())
 
         # Spawn every 5 frames
         if step == 5:
             if not entry_road.Value.Taken:
-                cars = Node(Car(entry_road.Value, False, car_texture), cars)
+                entities = Node(Car(entry_road.Value, False, car_texture), entities)
 
             if not entry_rivers.Value.Taken:
-                boats = Node(Boat(entry_rivers.Value, False, boat_texture), boats)
+                entities = Node(Boat(entry_rivers.Value, False, boat_texture), entities)
 
             step = 0
         step = step + 1
 
-        # Draw
-        cars.map(lambda i: i.Draw(screen, offset))
-        boats.map(lambda i: i.Draw(screen, offset))
+        # Draw/update entities on the screen
+        entities.map(lambda i: i.Draw(screen, offset))
 
         pygame.display.flip()
-        time.sleep(1) #0.2
+        time.sleep(0.6) #0.2
     
 Main()

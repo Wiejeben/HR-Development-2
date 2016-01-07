@@ -6,7 +6,6 @@ class Car:
     def __init__(self, position, canRemove, texture, prevPosition = Empty):
         self.Position = position
         self.PrevPosition = prevPosition
-        self.CanRemove = canRemove
         self.Texture = texture
 
     def Update(self):
@@ -28,13 +27,8 @@ class Car:
         # Do we have somewhere to go to?
         if directions is not Empty:
             position.Taken = False
-            
-            if position.Park:
-                self.CanRemove = True
-                position.Taken = False
-            else:
-                position = directions.random().Value
-                position.Taken = True
+            position = directions.random().Value
+            position.Taken = True
 
             return Car(position, self.CanRemove, self.Texture, prevPosition)
 
@@ -53,6 +47,16 @@ class Car:
         screen.blit(pygame.transform.scale(self.Texture, (_width, _width)), 
                             (_width + POSITION_X * offset, 
                             _width + POSITION_Y * offset))
+    
+    def CanRemove(self):
+        position = self.Position
+
+        # Check if vehicle can be removed
+        if position.Park:
+            position.Taken = False
+            return True
+        
+        return False
 
     def IsTraverseable(tile):
         if tile and tile != None and tile.Traverseable and not tile.Taken and not tile.Harbor:
