@@ -15,7 +15,6 @@ board_size = 10
 car_texture = pygame.image.load("Content\car.png").convert()
 entry_tile = build_square_matrix(board_size, offset)
 
-
 def Update(cars):
     cars = map(cars, lambda i: i.Update())
     cars = filter(cars, lambda i: not i.IsArrived())
@@ -44,10 +43,10 @@ def Main():
         entry_tile.Reset()
         entry_tile.Draw(screen)
 
-        #print(cars.length())
-
+        # Update car entity
         cars = Update(cars)
 
+        # Spawn new vehicle every 5 steps
         if step == 5:
             if not entry_tile.Taken:
                 cars = Node(Car(entry_tile), cars)
@@ -57,9 +56,10 @@ def Main():
 
         step = step + 1
 
+        # Reposition cars on screen
         Draw(cars)
 
         pygame.display.flip()
-        #time.sleep(1)
+        time.sleep(0.2)
     
 Main()
