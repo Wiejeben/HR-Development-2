@@ -197,3 +197,4 @@ FakesAssemblies/
 
 # Python
 *.pyc
+.idea/
