@@ -23,10 +23,10 @@ car_texture = pygame.image.load("Content/car.png").convert_alpha()
 
 def Main():
     start = time.time()
+    entities = Empty
 
-    # Initial vars
-    entities = Node(Boat(entry_rivers.Value, False, boat_texture), Node(Car(entry_road.Value, False, car_texture), Empty))
-    step = 0
+    # Start at 5 so entities will spawn on first frame
+    step = 5
 
     while True:
         pygame.event.get()
@@ -51,9 +51,11 @@ def Main():
         if step == 5:
             if not entry_road.Value.Taken:
                 entities = Node(Car(entry_road.Value, False, car_texture), entities)
+                entry_road.Value.Taken = True
 
             if not entry_rivers.Value.Taken:
                 entities = Node(Boat(entry_rivers.Value, False, boat_texture), entities)
+                entry_rivers.Value.Taken = True
 
             step = 0
         step = step + 1
@@ -62,6 +64,6 @@ def Main():
         entities.map(lambda i: i.Draw(screen, offset))
 
         pygame.display.flip()
-        time.sleep(0.6) #0.2
+        time.sleep(0.2)
     
 Main()
